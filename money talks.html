@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Do You Love Money?</title>
+  <style>
+    body {
+      font-family: Arial, sans-serif;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-size: cover;
+      background-position: center;
+      background-repeat: no-repeat;
+      background-attachment: fixed;
+      color: black;
+    }
+
+    .centered {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%);
+      text-align: center;
+    }
+
+    h1 {
+      font-size: 36px;
+      margin-bottom: 20px;
+      color: black;
+    }
+
+    .choice-btn {
+      font-size: 20px;
+      padding: 15px 30px;
+      background: linear-gradient(45deg, #FFD700, #FFCC00);
+      color: black;
+      font-weight: bold;
+      border: none;
+      border-radius: 5px;
+      cursor: pointer;
+      box-shadow: 0 0 10px rgba(0,0,0,0.3);
+      transition: transform 0.2s ease, background 0.3s;
+    }
+
+    .choice-btn:hover {
+      background: linear-gradient(45deg, #FFCC00, #FFD700);
+      transform: scale(1.05);
+    }
+
+    .money {
+      position: absolute;
+      font-size: 30px;
+      animation: fall 4s linear infinite;
+    }
+
+    @keyframes fall {
+      0% {
+        top: -10%;
+        opacity: 1;
+      }
+      100% {
+        top: 100%;
+        opacity: 0;
+      }
+    }
+
+    #counter {
+      position: absolute;
+      top: 10px;
+      left: 10px;
+      font-size: 24px;
+      background: white;
+      padding: 10px 20px;
+      border-radius: 10px;
+      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    }
+
+    .bottom-btn {
+      position: absolute;
+      bottom: 15px;
+      right: 15px;
+      font-size: 12px;
+      padding: 8px 16px;
+      background: gold;
+      color: black;
+      border: none;
+      border-radius: 4px;
+      cursor: pointer;
+      font-weight: bold;
+      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    }
+  </style>
+</head>
+<body>
+
+  <div id="counter">💲 0</div>
+
+  <div class="centered">
+    <h1>Do you love money?</h1>
+    <button class="choice-btn" onclick="startRain()">Yes</button>
+  </div>
+
+  <!-- Play-once button at bottom -->
+  <button class="bottom-btn" onclick="playMoneyTalks()">Play Audio</button>
+
+  <!-- Background loop audio -->
+  <audio id="backgroundMoneyTalks" autoplay loop>
+    <source src="https://github.com/TotallyNotDavee/hell-naw/raw/main/GOJO%20MONEY%20TALKS%20%5B3tWmP25zerg%5D.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- Cha-ching click sound -->
+  <audio id="chaChing">
+    <source src="https://github.com/TotallyNotDavee/hell-naw/raw/main/cha%20ching-sound%20effect%20(download)%20%5BtqNP8SiB90s%5D.mp3" type="audio/mpeg">
+  </audio>
+
+  <!-- One-time audio play -->
+  <audio id="gojoOnce">
+    <source src="https://github.com/TotallyNotDavee/hell-naw/raw/main/GOJO%20MONEY%20TALKS%20%5B3tWmP25zerg%5D.mp3" type="audio/mpeg">
+  </audio>
+
+  <script>
+    let balance = 0;
+
+    const backgrounds = [
+      'https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?auto=format&fit=crop&w=1600&q=80',
+      'https://images.unsplash.com/photo-1588776814546-d70538dd6eb7?auto=format&fit=crop&w=1600&q=80',
+      'https://images.unsplash.com/photo-1581888227599-7798115f1c81?auto=format&fit=crop&w=1600&q=80',
+      'https://images.unsplash.com/photo-1542224566-3ef4979d82f5?auto=format&fit=crop&w=1600&q=80'
+    ];
+
+    document.body.style.backgroundImage = `url('${backgrounds[Math.floor(Math.random() * backgrounds.length)]}')`;
+
+    function startRain() {
+      const sound = document.getElementById('chaChing');
+      sound.play();
+
+      for (let i = 0; i < 30; i++) {
+        let money = document.createElement('div');
+        money.classList.add('money');
+        money.innerHTML = '💲';
+        money.style.left = Math.random() * 100 + 'vw';
+        money.style.animationDuration = (Math.random() * 3 + 2) + 's';
+        document.body.appendChild(money);
+
+        balance += 100;
+        document.getElementById('counter').innerText = '💲 ' + balance;
+      }
+    }
+
+    function playMoneyTalks() {
+      document.getElementById('gojoOnce').play();
+    }
+  </script>
+
+</body>
+</html>
