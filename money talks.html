@@ -1,157 +1,225 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <meta charset="UTF-8" />
-  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
-  <title>Do You Love Money?</title>
+  <meta charset="UTF-8">
+  <title>Are you single?</title>
   <style>
     body {
       font-family: Arial, sans-serif;
-      margin: 0;
-      padding: 0;
+      text-align: center;
+      margin-top: 100px;
       overflow: hidden;
-      background-size: cover;
-      background-position: center;
-      background-repeat: no-repeat;
-      background-attachment: fixed;
-      color: black;
+      position: relative;
+      height: 100vh;
+      background-color: #ffe6f0;
+      transition: background-color 1s;
     }
 
-    .centered {
+    h1 {
+      font-size: 2em;
+      transition: all 0.5s;
+    }
+
+    .btn {
+      padding: 10px 20px;
+      margin: 10px;
+      font-size: 1.2em;
+      cursor: pointer;
+      border: none;
+      border-radius: 8px;
+      transition: all 0.5s ease;
+    }
+
+    #yes {
+      background-color: #4CAF50;
+      color: white;
+    }
+
+    #no {
+      background-color: #f44336;
+      color: white;
       position: absolute;
       top: 50%;
       left: 50%;
       transform: translate(-50%, -50%);
+    }
+
+    #popup {
+      position: fixed;
+      bottom: -400px;
+      left: 50%;
+      transform: translateX(-50%);
+      background-color: #ffccdd;
+      color: #333;
+      padding: 30px;
+      border-radius: 20px;
+      font-size: 1.5em;
+      box-shadow: 0 4px 15px rgba(0,0,0,0.3);
+      opacity: 0;
+      transition: all 1s ease;
+      width: 300px;
       text-align: center;
+      z-index: 10;
     }
 
-    h1 {
-      font-size: 36px;
-      margin-bottom: 20px;
-      color: black;
+    #popup.show {
+      bottom: 100px;
+      opacity: 1;
     }
 
-    .choice-btn {
-      font-size: 20px;
-      padding: 15px 30px;
-      background: linear-gradient(45deg, #FFD700, #FFCC00);
-      color: black;
-      font-weight: bold;
-      border: none;
-      border-radius: 5px;
+    #popup .emojis {
+      font-size: 2em;
+      margin-bottom: 10px;
+    }
+
+    .popup-btn {
+      padding: 10px 20px;
+      margin: 10px 5px 0 5px;
+      font-size: 1em;
       cursor: pointer;
-      box-shadow: 0 0 10px rgba(0,0,0,0.3);
-      transition: transform 0.2s ease, background 0.3s;
+      border: none;
+      border-radius: 10px;
+      background-color: #ff6699;
+      color: white;
+      transition: background 0.3s;
     }
 
-    .choice-btn:hover {
-      background: linear-gradient(45deg, #FFCC00, #FFD700);
-      transform: scale(1.05);
+    .popup-btn:hover {
+      background-color: #ff3366;
     }
 
-    .money {
-      position: absolute;
-      font-size: 30px;
-      animation: fall 4s linear infinite;
+    .fade-out {
+      opacity: 0;
+      transition: opacity 0.1s ease;
+    }
+
+    .rain {
+      position: fixed;
+      top: -50px;
+      font-size: 2em;
+      animation: fall 5s linear infinite;
+      user-select: none;
+      pointer-events: none;
     }
 
     @keyframes fall {
-      0% {
-        top: -10%;
-        opacity: 1;
-      }
-      100% {
-        top: 100%;
+      to {
+        transform: translateY(110vh) rotate(360deg);
         opacity: 0;
       }
     }
 
-    #counter {
-      position: absolute;
-      top: 10px;
-      left: 10px;
-      font-size: 24px;
-      background: white;
-      padding: 10px 20px;
-      border-radius: 10px;
-      box-shadow: 0 0 10px rgba(0,0,0,0.2);
+    #finalPopup {
+      position: fixed;
+      top: 50%;
+      left: 50%;
+      transform: translate(-50%, -50%) scale(0);
+      background-color: white;
+      padding: 40px;
+      border-radius: 20px;
+      font-size: 2em;
+      box-shadow: 0 4px 20px rgba(0,0,0,0.5);
+      opacity: 0;
+      transition: all 0.5s ease;
+      z-index: 20;
+      text-align: center;
+      color: transparent;
+      background-clip: text;
+      -webkit-background-clip: text;
+      background-image: linear-gradient(45deg, pink, red);
+      cursor: pointer;
     }
 
-    .bottom-btn {
-      position: absolute;
-      bottom: 15px;
-      right: 15px;
-      font-size: 12px;
-      padding: 8px 16px;
-      background: gold;
-      color: black;
-      border: none;
-      border-radius: 4px;
-      cursor: pointer;
-      font-weight: bold;
-      box-shadow: 0 0 5px rgba(0,0,0,0.3);
+    #finalPopup.show {
+      transform: translate(-50%, -50%) scale(1);
+      opacity: 1;
     }
   </style>
 </head>
 <body>
 
-  <div id="counter">💲 0</div>
+  <h1 id="mainTitle">Are you single?</h1>
 
-  <div class="centered">
-    <h1>Do you love money?</h1>
-    <button class="choice-btn" onclick="startRain()">Yes</button>
+  <button id="yes" class="btn">Yes</button>
+  <button id="no" class="btn">No</button>
+
+  <div id="popup">
+    <div class="emojis">🌹🧸❤️</div>
+    <div>lol same, wanna be my pookie bear?</div>
+    <div>
+      <button class="popup-btn">Yes</button>
+      <button class="popup-btn">Yes</button>
+    </div>
   </div>
 
-  <!-- Play-once button at bottom -->
-  <button class="bottom-btn" onclick="playMoneyTalks()">Play Audio</button>
-
-  <!-- Background loop audio -->
-  <audio id="backgroundMoneyTalks" autoplay loop>
-    <source src="https://github.com/TotallyNotDavee/hell-naw/raw/main/GOJO%20MONEY%20TALKS%20%5B3tWmP25zerg%5D.mp3" type="audio/mpeg">
-  </audio>
-
-  <!-- Cha-ching click sound -->
-  <audio id="chaChing">
-    <source src="https://github.com/TotallyNotDavee/hell-naw/raw/main/cha%20ching-sound%20effect%20(download)%20%5BtqNP8SiB90s%5D.mp3" type="audio/mpeg">
-  </audio>
-
-  <!-- One-time audio play -->
-  <audio id="gojoOnce">
-    <source src="https://github.com/TotallyNotDavee/hell-naw/raw/main/GOJO%20MONEY%20TALKS%20%5B3tWmP25zerg%5D.mp3" type="audio/mpeg">
-  </audio>
+  <div id="finalPopup">Congrats ur my pookie bear now :))</div>
 
   <script>
-    let balance = 0;
+    const noButton = document.getElementById('no');
+    const yesButton = document.getElementById('yes');
+    const popup = document.getElementById('popup');
+    const popupYesButtons = document.querySelectorAll('.popup-btn');
+    const finalPopup = document.getElementById('finalPopup');
+    const mainTitle = document.getElementById('mainTitle');
+    let clickCount = 0;
+    let rainStarted = false;
 
-    const backgrounds = [
-      'https://images.unsplash.com/photo-1567427017947-545c5f8d16ad?auto=format&fit=crop&w=1600&q=80',
-      'https://images.unsplash.com/photo-1588776814546-d70538dd6eb7?auto=format&fit=crop&w=1600&q=80',
-      'https://images.unsplash.com/photo-1581888227599-7798115f1c81?auto=format&fit=crop&w=1600&q=80',
-      'https://images.unsplash.com/photo-1542224566-3ef4979d82f5?auto=format&fit=crop&w=1600&q=80'
-    ];
+    noButton.addEventListener('click', () => {
+      clickCount++;
 
-    document.body.style.backgroundImage = `url('${backgrounds[Math.floor(Math.random() * backgrounds.length)]}')`;
+      if (clickCount < 4) {
+        const x = Math.random() * (window.innerWidth - noButton.offsetWidth);
+        const y = Math.random() * (window.innerHeight - noButton.offsetHeight);
+        noButton.style.left = `${x}px`;
+        noButton.style.top = `${y}px`;
+      } else {
+        noButton.classList.add('fade-out');
+        noButton.disabled = true;
+
+        setTimeout(() => {
+          noButton.style.display = 'none';
+        }, 100);
+      }
+    });
+
+    yesButton.addEventListener('click', () => {
+      popup.classList.add('show');
+    });
+
+    popupYesButtons.forEach(button => {
+      button.addEventListener('click', () => {
+        if (!rainStarted) {
+          startRain();
+          rainStarted = true;
+        }
+        showFinalPopup();
+      });
+    });
 
     function startRain() {
-      const sound = document.getElementById('chaChing');
-      sound.play();
+      const emojis = ["🌸", "❤️", "🌹", "💖", "💐", "💞"];
+      setInterval(() => {
+        const emoji = document.createElement('div');
+        emoji.classList.add('rain');
+        emoji.innerText = emojis[Math.floor(Math.random() * emojis.length)];
+        emoji.style.left = Math.random() * 100 + "vw";
+        emoji.style.fontSize = Math.random() * 20 + 20 + "px";
+        document.body.appendChild(emoji);
 
-      for (let i = 0; i < 30; i++) {
-        let money = document.createElement('div');
-        money.classList.add('money');
-        money.innerHTML = '💲';
-        money.style.left = Math.random() * 100 + 'vw';
-        money.style.animationDuration = (Math.random() * 3 + 2) + 's';
-        document.body.appendChild(money);
-
-        balance += 100;
-        document.getElementById('counter').innerText = '💲 ' + balance;
-      }
+        setTimeout(() => {
+          emoji.remove();
+        }, 5000);
+      }, 200);
     }
 
-    function playMoneyTalks() {
-      document.getElementById('gojoOnce').play();
+    function showFinalPopup() {
+      finalPopup.classList.add('show');
     }
+
+    finalPopup.addEventListener('click', () => {
+      mainTitle.innerHTML = "ur not single anymore 🥳🎉";
+      finalPopup.style.display = "none";
+    });
   </script>
 
 </body>
